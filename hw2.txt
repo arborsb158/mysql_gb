@@ -1,0 +1,122 @@
+1#################################################################################
+yury@yury-VirtualBox:~$ pwd
+/home/yury
+yury@yury-VirtualBox:~$ echo >.my.cnf
+yury@yury-VirtualBox:~$ nano .my.cnf
+yury@yury-VirtualBox:~$ mysql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.23-0ubuntu0.20.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> exit
+Bye
+yury@yury-VirtualBox:~$ chmod go-rwx .my.cnf
+2#######################################################################################
+mysql> CREATE DATABASE example
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| example            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.02 sec)
+mysql> use example
+Database changed
+mysql> CREATE TABLE IF NOT EXISTS users (id INT, name VARCHAR(20));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESCRIBE users;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | YES  |     | NULL    |       |
+| name  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+3###########################################################################################
+mysql> use mysql
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> CREATE DATABASE sample
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> exit
+Bye
+yury@yury-VirtualBox:~$ mysqldump example > exampledump.sql
+yury@yury-VirtualBox:~$ mysql sample < exampledump.sql
+yury@yury-VirtualBox:~$ mysql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.23-0ubuntu0.20.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| example            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sample             |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use sample
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_sample |
++------------------+
+| users            |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> describe users;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | YES  |     | NULL    |       |
+| name  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> use mysql
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+4###########################################################################################
+mysql> exit
+Bye
+yury@yury-VirtualBox:~$ mysqldump --where="true limit 100" mysql help_keyword > keyworddump.sql;
