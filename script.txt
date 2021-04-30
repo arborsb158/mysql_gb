@@ -1,0 +1,39 @@
+DESC friendship ;
+SELECT * FROM friendship_statuses;
+SELECT * FROM friendship limit 10;
+SELECT * FROM users where created_at > updated_at; 
+UPDATE users set updated_at = NOW() where created_at > updated_at;
+SELECT * FROM users limit 10;
+show tables;
+UPDATE communities set updated_at = NOW() where created_at > updated_at;
+UPDATE friendship set updated_at = NOW() where created_at > updated_at;
+UPDATE friendship_statuses set updated_at = NOW() where created_at > updated_at;
+UPDATE media set updated_at = NOW() where created_at > updated_at;
+UPDATE media_types set updated_at = NOW() where created_at > updated_at;
+UPDATE profiles set updated_at = NOW() where created_at > updated_at;
+DESC profiles;
+DROP table extensions;
+CREATE TEMPORARY TABLE extensions (name VARCHAR(10));
+INSERT INTO extensions VALUES ('jpeg'), ('mp4'), ('mp3'), ('avi'), ('png');
+SELECT * FROM extensions;
+UPDATE media SET filename = CONCAT(
+  'http://dropbox.net/vk/',
+  filename,
+  '.',
+  (SELECT name FROM extensions ORDER BY RAND() LIMIT 1)
+);
+SELECT * FROM media limit 10;
+UPDATE media SET size = FLOOR(10000 + (RAND() * 1000000)) WHERE size < 1000;
+UPDATE media SET metadata = CONCAT('{"owner":"', 
+  (SELECT CONCAT(first_name, ' ', last_name) FROM users WHERE id = user_id),
+  '"}');  
+ALTER TABLE media MODIFY COLUMN metadata JSON;
+desc media;
+SELECT * FROM media_types;
+TRUNCATE friendship_statuses;
+INSERT INTO friendship_statuses (name) VALUES
+  ('Requested'),
+  ('Confirmed'),
+  ('Rejected');SELECT * FROM friendship_statuses;
+UPDATE friendship SET friendship_status_id = FLOOR(1 + RAND() * 3); 
+SELECT * FROM friendship limit 10;
